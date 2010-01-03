@@ -1,0 +1,7 @@
+#!/bin/bash
+
+RSYNC_OPTS="-vrace ssh --delete"
+rsync ${RSYNC_OPTS} "${1}" "${2}"
+inotifywait -mr --format '%f' -e modify -e create -e delete -e move -e attrib "${1}" | while read file; do
+	rsync ${RSYNC_OPTS} "${1}" "${2}"
+done
